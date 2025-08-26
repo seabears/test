@@ -45,8 +45,8 @@
 #define UART_PIN_TX             IfxAsclin3_TX_P15_7_OUT                 /* UART transmit port pin                   */
 
 /* Definition of the interrupt priorities */
-#define INTPRIO_ASCLIN0_RX      18
-#define INTPRIO_ASCLIN0_TX      19
+#define INTPRIO_ASCLIN3_RX      18
+#define INTPRIO_ASCLIN3_TX      19
 
 #define UART_RX_BUFFER_SIZE     64                                      /* Definition of the receive buffer size    */
 #define UART_TX_BUFFER_SIZE     64                                      /* Definition of the transmit buffer size   */
@@ -73,14 +73,14 @@ static uint8 g_ascRxBuffer[UART_RX_BUFFER_SIZE + sizeof(Ifx_Fifo) + 8];
 /*---------------------------------------------Function Implementations----------------------------------------------*/
 /*********************************************************************************************************************/
 /* Adding of the interrupt service routines */
-IFX_INTERRUPT(asclin0TxISR, 0, INTPRIO_ASCLIN0_TX);
-void asclin0TxISR(void)
+IFX_INTERRUPT(asclin3TxISR, 0, INTPRIO_ASCLIN3_TX);
+void asclin3TxISR(void)
 {
     IfxAsclin_Asc_isrTransmit(&g_ascHandle);
 }
 
-IFX_INTERRUPT(asclin0RxISR, 0, INTPRIO_ASCLIN0_RX);
-void asclin0RxISR(void)
+IFX_INTERRUPT(asclin3RxISR, 0, INTPRIO_ASCLIN3_RX);
+void asclin3RxISR(void)
 {
     IfxAsclin_Asc_isrReceive(&g_ascHandle);
 }
@@ -96,8 +96,8 @@ void init_ASCLIN_UART(void)
     ascConfig.baudrate.baudrate = UART_BAUDRATE;
 
     /* ISR priorities and interrupt target */
-    ascConfig.interrupt.txPriority = INTPRIO_ASCLIN0_TX;
-    ascConfig.interrupt.rxPriority = INTPRIO_ASCLIN0_RX;
+    ascConfig.interrupt.txPriority = INTPRIO_ASCLIN3_TX;
+    ascConfig.interrupt.rxPriority = INTPRIO_ASCLIN3_RX;
     ascConfig.interrupt.typeOfService = IfxCpu_Irq_getTos(IfxCpu_getCoreIndex());
 
     /* FIFO configuration */
